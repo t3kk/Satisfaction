@@ -29,13 +29,12 @@ public class ProtoMain {
 		fc.showOpenDialog(parent);
 		//Pop the window
 		File chosenFile = fc.getSelectedFile();
-		RandomAccessFile raf = new RandomAccessFile(file, mode)
 
 		//Figure out the file extension
 		String fileName = chosenFile.getName();
 		String fileExtension = fileName.substring(fileName.lastIndexOf('.')+1);
 		//We are going to make the new files in the same directory of the originally selected file
-		String dirOfSelectedFile = chosenFile.getParentFile().toString();
+		String dirOfSelectedFile = chosenFile.getPath();
 		
 		//Read the file into a array of bytes (ones and zeros)
 		//TODO: Use Files with SeekableByteChannel in the future
