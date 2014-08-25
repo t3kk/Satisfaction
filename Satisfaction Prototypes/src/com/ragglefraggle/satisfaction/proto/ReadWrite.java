@@ -47,23 +47,29 @@ public class ReadWrite {
 		long inFileSize = inFileChannel.size();
 		System.out.println("infilesize "+ inFileSize);
 		
+		long startTime = System.currentTimeMillis();
+		
+		
 		//This will run once for sure and then keep running as long as the while condition is met
 		do{
 			//TODO: check for what would happen if we have 0 bytes left
 			//Make the buffer smaller for the last bytes
 			if (BYTE_BUFFER_SIZE > inRandomFile.length() - position ){
 				//TODO: switch to limit
-				fileByteBuffer = ByteBuffer.allocate((int)(inRandomFile.length() - position));
-				System.out.println("Last allocation "+fileByteBuffer.capacity()+"vs "+BYTE_BUFFER_SIZE);
+				fileByteBuffer.limit((int)(inRandomFile.length() - position));
+				System.out.println("Last allocation "+fileByteBuffer.limit()+"vs "+BYTE_BUFFER_SIZE);
 			}
 			bytesRead = inFileChannel.read(fileByteBuffer, position);
 			
 			//Need to move the pointer back to the head.
 			fileByteBuffer.rewind();
 			outFileChannel.write(fileByteBuffer, position);
+			
 			position = position + bytesRead;
 			//Clean up again for the next loop.
 			fileByteBuffer.clear();
+			
+			System.out.println("Percent complete: " + (100*position)/inRandomFile.length());
 			
 		}while (bytesRead==BYTE_BUFFER_SIZE);
 		//Close access to our file when we are done to prevent leaks.
@@ -78,6 +84,12 @@ public class ReadWrite {
 		else{
 			System.out.println("FILE SIZED DONT MATCH");
 		}
+		
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		
+		System.out.println("Elapsed time in seconds " + elapsedTime/1000.0);
+		
+		
 		//Then close file
 		outRandomFile.close();
 		
