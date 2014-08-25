@@ -16,7 +16,7 @@ public class ReadWrite {
 	
 	
 	
-	public static void main(String[] args) throws IOException
+	public static void run() throws IOException
 	{
 		JFileChooser fc = new JFileChooser();
 		Component parent = new Window(null);
