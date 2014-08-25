@@ -5,6 +5,7 @@ import java.awt.Window;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,12 +29,13 @@ public class ProtoMain {
 		fc.showOpenDialog(parent);
 		//Pop the window
 		File chosenFile = fc.getSelectedFile();
+		RandomAccessFile raf = new RandomAccessFile(file, mode)
 
 		//Figure out the file extension
 		String fileName = chosenFile.getName();
 		String fileExtension = fileName.substring(fileName.lastIndexOf('.')+1);
 		//We are going to make the new files in the same directory of the originally selected file
-		String dirOfSelectedFile = chosenFile.getParent();
+		String dirOfSelectedFile = chosenFile.getParentFile().toString();
 		
 		//Read the file into a array of bytes (ones and zeros)
 		//TODO: Use Files with SeekableByteChannel in the future

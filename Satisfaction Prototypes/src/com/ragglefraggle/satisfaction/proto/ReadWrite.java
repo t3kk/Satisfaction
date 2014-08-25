@@ -21,15 +21,17 @@ public class ReadWrite {
 		FileChannel inFileChannel = inRandomFile.getChannel();
 		FileChannel outFileChannel = outRandomFile.getChannel();
 		ByteBuffer fileByteBuffer = ByteBuffer.allocate(BYTE_BUFFER_SIZE);
-		long position = 0l;
+		long position = 0L;
 		int bytesRead;
 		long inFileSize = inFileChannel.size();
 		System.out.println("infilesize "+ inFileSize);
 		
 		//This will run once for sure and then keep running as long as the while condition is met
 		do{
+			//TODO: check for what would happen if we have 0 bytes left
 			//Make the buffer smaller for the last bytes
 			if (BYTE_BUFFER_SIZE > inRandomFile.length() - position ){
+				//TODO: switch to limit
 				fileByteBuffer = ByteBuffer.allocate((int)(inRandomFile.length() - position));
 				System.out.println("Last allocation "+fileByteBuffer.capacity()+"vs "+BYTE_BUFFER_SIZE);
 			}
@@ -46,11 +48,6 @@ public class ReadWrite {
 		//Close access to our file when we are done to prevent leaks.
 		inRandomFile.close();
 		//Flush to filesystem
-//		long truncateOffset = fileByteBuffer.capacity()-bytesRead-1;
-//		System.out.println(outFileChannel.size());
-//		System.out.println(truncateOffset);
-//		outFileChannel.force(true);
-//		outFileChannel.truncate(outFileChannel.size()-truncateOffset);
 		outFileChannel.force(true);
 		long outFileSize = outFileChannel.size();
 		System.out.println("finalSize "+ outFileSize);
