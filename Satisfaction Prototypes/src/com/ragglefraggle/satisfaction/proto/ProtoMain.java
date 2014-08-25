@@ -33,7 +33,7 @@ public class ProtoMain {
 		String fileName = chosenFile.getName();
 		String fileExtension = fileName.substring(fileName.lastIndexOf('.')+1);
 		//We are going to make the new files in the same directory of the originally selected file
-		String dirOfSelectedFile = chosenFile.getParent();
+		String dirOfSelectedFile = chosenFile.getPath();
 		
 		//Read the file into a array of bytes (ones and zeros)
 		//TODO: Use Files with SeekableByteChannel in the future

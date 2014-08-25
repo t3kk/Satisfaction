@@ -1,9 +1,13 @@
 package com.ragglefraggle.satisfaction.proto;
 
+import java.awt.Component;
+import java.awt.Window;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import javax.swing.JFileChooser;
 
 public class ReadWrite {
 	
@@ -13,10 +17,27 @@ public class ReadWrite {
 	
 	public static void main(String[] args) throws IOException
 	{
-		//Open our input file as read only
-		RandomAccessFile inRandomFile = new RandomAccessFile("/Users/ryanflaherty/Desktop/st2009.mkv", "r"); 	
+		JFileChooser fc = new JFileChooser();
+		Component parent = new Window(null);
+		fc.showOpenDialog(parent);
+		File chosenFile= fc.getSelectedFile();
+		
+		String fileName = chosenFile.getName().substring(0 , chosenFile.getName().lastIndexOf('.'));
+		String fileExtension = chosenFile.getName().substring(chosenFile.getName().lastIndexOf('.')+1);
+		String dirOfSelectedFile = chosenFile.getParentFile().toString();
+		
+		System.out.println(fileName);
+		System.out.println(fileExtension);
+		System.out.println(dirOfSelectedFile);
+		System.out.println(chosenFile);
+		
+		
+				//Open our input file as read only
+		RandomAccessFile inRandomFile = new RandomAccessFile(chosenFile, "r"); 	
 		//Open our target as read/write
-		RandomAccessFile outRandomFile = new RandomAccessFile("/Users/ryanflaherty/Desktop/st2009.2.mkv", "rw");
+		RandomAccessFile outRandomFile = new RandomAccessFile(dirOfSelectedFile + "\\" + fileName
+				+ " copy." + fileExtension, "rw");
+		
 		//Create filechannels so we can access the bytes anywhere
 		FileChannel inFileChannel = inRandomFile.getChannel();
 		FileChannel outFileChannel = outRandomFile.getChannel();
