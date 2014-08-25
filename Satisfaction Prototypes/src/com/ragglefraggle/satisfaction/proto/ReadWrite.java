@@ -49,7 +49,8 @@ public class ReadWrite {
 		
 		long startTime = System.currentTimeMillis();
 		
-		
+		System.out.print("Percent complete:  ");
+		int percentComplete;
 		//This will run once for sure and then keep running as long as the while condition is met
 		do{
 			//TODO: check for what would happen if we have 0 bytes left
@@ -57,7 +58,7 @@ public class ReadWrite {
 			if (BYTE_BUFFER_SIZE > inRandomFile.length() - position ){
 				//TODO: switch to limit
 				fileByteBuffer.limit((int)(inRandomFile.length() - position));
-				System.out.println("Last allocation "+fileByteBuffer.limit()+"vs "+BYTE_BUFFER_SIZE);
+				//System.out.println("Last allocation "+fileByteBuffer.limit()+"vs "+BYTE_BUFFER_SIZE);
 			}
 			bytesRead = inFileChannel.read(fileByteBuffer, position);
 			
@@ -69,7 +70,17 @@ public class ReadWrite {
 			//Clean up again for the next loop.
 			fileByteBuffer.clear();
 			
-			System.out.println("Percent complete: " + (100*position)/inRandomFile.length());
+			
+			
+			percentComplete = (int) ((100*position)/inRandomFile.length());
+			if (percentComplete<10){
+				System.out.print("\b" + percentComplete );
+			}
+			else{
+				System.out.print("\b\b" + percentComplete );
+			}
+			
+			
 			
 		}while (bytesRead==BYTE_BUFFER_SIZE);
 		//Close access to our file when we are done to prevent leaks.
@@ -88,7 +99,6 @@ public class ReadWrite {
 		long elapsedTime = System.currentTimeMillis() - startTime;
 		
 		System.out.println("Elapsed time in seconds " + elapsedTime/1000.0);
-		
 		
 		//Then close file
 		outRandomFile.close();
